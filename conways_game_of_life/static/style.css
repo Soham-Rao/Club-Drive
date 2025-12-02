@@ -1,0 +1,206 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap');
+
+:root {
+    --bg-color: #1e1e1e;
+    --grid-color: rgba(255, 255, 255, 0.05);
+    --board-color: rgba(44, 62, 80, 0.8);
+    --text-color: #ecf0f1;
+    --accent-color: #00b894;
+    --alive-color: #00b894;
+    /* Neon Green (Default/P1) */
+    --p1-color: #00b894;
+    --p2-color: #e17055;
+    /* Neon Orange */
+    --dead-color: #2d3436;
+}
+
+body {
+    font-family: 'Ubuntu', sans-serif;
+    background-color: var(--bg-color);
+    background-image:
+        linear-gradient(var(--grid-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+    background-size: 40px 40px;
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.game-container {
+    background-color: var(--board-color);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    backdrop-filter: blur(5px);
+    border: 4px solid #34495e;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    width: 100%;
+}
+
+h1 {
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--text-color);
+    text-shadow: 3px 3px 0px #000;
+    font-size: 2.5rem;
+}
+
+.controls-bar {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 1.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+button {
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.1s;
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2);
+    padding: 10px 20px;
+    color: white;
+}
+
+button:active {
+    transform: translateY(4px);
+    box-shadow: none;
+}
+
+#start-btn {
+    background-color: #00b894;
+}
+
+#stop-btn {
+    background-color: #e17055;
+}
+
+#clear-btn {
+    background-color: #636e72;
+}
+
+#random-btn {
+    background-color: #0984e3;
+}
+
+.speed-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 5px 15px;
+    border-radius: 20px;
+}
+
+#grid-container {
+    display: grid;
+    grid-template-columns: repeat(50, 15px);
+    grid-template-rows: repeat(30, 15px);
+    gap: 1px;
+    background-color: #34495e;
+    border: 2px solid #34495e;
+    margin-bottom: 1.5rem;
+}
+
+.cell {
+    width: 15px;
+    height: 15px;
+    background-color: var(--dead-color);
+    cursor: pointer;
+    transition: background-color 0.1s;
+}
+
+.cell.alive {
+    background-color: var(--alive-color);
+    box-shadow: 0 0 5px var(--alive-color);
+}
+
+.cell.p1 {
+    background-color: var(--p1-color);
+    box-shadow: 0 0 5px var(--p1-color);
+}
+
+.cell.p2 {
+    background-color: var(--p2-color);
+    box-shadow: 0 0 5px var(--p2-color);
+}
+
+.stats {
+    font-size: 1.2rem;
+    font-weight: bold;
+    display: flex;
+    gap: 30px;
+    color: #b2bec3;
+}
+
+.nav-btn {
+    text-decoration: none;
+    color: white;
+    background-color: #636e72;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.3);
+}
+
+.nav-btn:hover {
+    background-color: #b2bec3;
+    color: #2d3436;
+}
+
+.nav-btn:active {
+    transform: translateY(3px);
+    box-shadow: none;
+}
+
+.player-controls {
+    display: flex;
+    gap: 10px;
+    margin-right: 20px;
+}
+
+.player-btn {
+    background-color: #636e72;
+    opacity: 0.7;
+}
+
+.player-btn.active {
+    opacity: 1;
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+#p1-btn.active {
+    background-color: var(--p1-color);
+}
+
+#p2-btn.active {
+    background-color: var(--p2-color);
+}
+
+.win-condition {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #dfe6e9;
+    font-weight: bold;
+    margin-right: 15px;
+}
