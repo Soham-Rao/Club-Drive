@@ -188,7 +188,9 @@ document.addEventListener('DOMContentLoaded', () => {
             messageArea.innerHTML = "YOU BROKE THE CODE! 🎉";
             messageArea.style.color = "#2ecc71";
         } else {
-            messageArea.innerHTML = `GAME OVER. Code was: ${secretCode.join(', ')}`;
+            messageArea.innerHTML = 'GAME OVER. Code was: <div style="display:inline-flex; gap:5px; vertical-align:middle;">' +
+                secretCode.map(color => `<div class="peg" style="background-color:${getColorHex(color)}; width:20px; height:20px; display:inline-block;"></div>`).join('') +
+                '</div>';
             messageArea.style.color = "#e74c3c";
         }
     }
