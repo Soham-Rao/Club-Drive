@@ -72,19 +72,77 @@
             cursor: not-allowed;
             transform: none;
         }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: var(--board-color);
+            margin: 10% auto;
+            padding: 2rem;
+            border: 2px solid #34495e;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 15px;
+            color: var(--text-color);
+            position: relative;
+            text-align: left;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #e74c3c;
+        }
+
+        .close-btn:hover {
+            color: #c0392b;
+        }
+
+        .modal-content h2 {
+            text-align: center;
+            color: var(--accent-color);
+            margin-top: 0;
+        }
+
+        .modal-content ul {
+            line-height: 1.6;
+            padding-left: 20px;
+        }
+
+        .modal-content li {
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 
 <body>
     <div class="home-container">
         <header>
-            <h1>MASTERMIND</h1>
+            <img src="/assets/Logo.png" alt="Mastermind Logo"
+                style="max-width: 300px; width: 100%; margin-bottom: 10px;">
             <p>Crack the code!</p>
         </header>
 
         <div id="main-menu">
             <button class="mode-btn" onclick="startGame('computer')">👤 Vs Computer</button>
             <button class="mode-btn" onclick="showMultiplayerSetup()">👥 Multiplayer (PvP)</button>
+            <button class="mode-btn" onclick="showRules()" style="background-color: #e67e22; border-color: #d35400;">📜
+                How to Play</button>
         </div>
 
         <div id="multiplayer-setup" class="multiplayer-setup">
@@ -111,6 +169,24 @@
                 Game</button>
             <button class="mode-btn" onclick="hideMultiplayerSetup()"
                 style="font-size: 0.9rem; padding: 10px;">Back</button>
+        </div>
+    </div>
+
+    <!-- Rules Modal -->
+    <div id="rules-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeRules()">&times;</span>
+            <h2>Mastermind Rules</h2>
+            <ul>
+                <li><strong>Goal:</strong> Guess the secret 4-color code within 10 turns.</li>
+                <li><strong>Feedback:</strong>
+                    <ul>
+                        <li>⚫ <strong>Black Peg:</strong> Correct color in the Correct position.</li>
+                        <li>⚪ <strong>White Peg:</strong> Correct color but in the Wrong position.</li>
+                    </ul>
+                </li>
+                <li><strong>Multiplayer:</strong> Player 1 sets the code, Player 2 tries to guess it.</li>
+            </ul>
         </div>
     </div>
 
@@ -221,6 +297,22 @@
                 .then(data => {
                     window.location.href = '/game';
                 });
+        }
+
+        // Rules Modal Logic
+        function showRules() {
+            document.getElementById('rules-modal').style.display = 'block';
+        }
+
+        function closeRules() {
+            document.getElementById('rules-modal').style.display = 'none';
+        }
+
+        window.onclick = function (event) {
+            const modal = document.getElementById('rules-modal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
         }
     </script>
 </body>

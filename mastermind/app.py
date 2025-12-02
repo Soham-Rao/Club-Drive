@@ -8,6 +8,11 @@ game_engine = GameEngine()
 def home():
     return render_template('home.html')
 
+@app.route('/assets/<path:filename>')
+def custom_assets(filename):
+    from flask import send_from_directory
+    return send_from_directory('assets', filename)
+
 @app.route('/game')
 def game():
     return render_template('index.html', mode=getattr(game_engine, 'mode', 'computer'))
