@@ -104,8 +104,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function getColorHex(colorName) {
         const map = {
-            'red': '#ff4d4d', 'blue': '#4d4dff', 'green': '#4dff4d',
-            'yellow': '#ffff4d', 'orange': '#ffad33', 'purple': '#bf40bf'
+            'red': '#ff7675', 'blue': '#74b9ff', 'green': '#55efc4',
+            'yellow': '#ffeaa7', 'orange': '#fab1a0', 'purple': '#a29bfe'
         };
         return map[colorName] || '#2c3e50';
     }
