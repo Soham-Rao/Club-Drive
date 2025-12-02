@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Word - Play</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="game-container">
+        <div class="header">
+            <img src="/assets/Logo.png" alt="Logo" class="mini-logo">
+            <div class="timer-display" id="timer-display">60</div>
+            <button id="exit-btn" class="btn-danger">Exit</button>
+        </div>
+
+        <div class="main-area">
+            <div class="word-display" id="word-display">
+                <!-- Underscores will be injected here -->
+            </div>
+
+            <div class="input-area">
+                <input type="text" id="guess-input" placeholder="Type your guess..." autocomplete="off" autofocus>
+                <button id="submit-guess" class="btn-action">Guess</button>
+            </div>
+
+            <div class="feedback-area" id="feedback-area">
+                <!-- Last guess feedback -->
+            </div>
+
+            <div class="clue-area" id="clue-area">
+                <!-- Clues appear here -->
+            </div>
+        </div>
+
+        <div class="history-area">
+            <h3>Guess History</h3>
+            <div class="guesses-list" id="guesses-list">
+                <!-- History items -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay for Win/Lose -->
+    <div id="game-over-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2 id="modal-title">Game Over</h2>
+            <p id="modal-message"></p>
+            <p>The word was: <span id="secret-word-reveal" class="reveal"></span></p>
+            <div class="modal-actions">
+                <button id="retry-btn" class="btn-primary">Retry</button>
+                <button id="home-btn" class="btn-secondary">Home</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>

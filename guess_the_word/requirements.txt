@@ -1,0 +1,4 @@
+flask
+gensim
+numpy
+scipy

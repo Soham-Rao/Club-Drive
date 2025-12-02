@@ -1,0 +1,466 @@
+:root {
+    --bg-color: #2c3e50;
+    --board-color: #34495e;
+    --hole-color: #2c3e50;
+    --text-color: #ecf0f1;
+    --accent-color: #e74c3c;
+}
+
+body {
+    font-family: 'Roboto Mono', monospace;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.game-container {
+    background-color: var(--board-color);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 1000px;
+    overflow-x: auto;
+}
+
+.home-container {
+    text-align: center;
+    background-color: var(--board-color);
+    padding: 3rem;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    max-width: 500px;
+    width: 90%;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+h1 {
+    margin: 0;
+    letter-spacing: 5px;
+    color: var(--accent-color);
+}
+
+.rules {
+    font-size: 0.8rem;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.rule-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.peg {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.peg.black {
+    background-color: #000;
+    border: 1px solid #555;
+}
+
+.peg.white {
+    background-color: #fff;
+}
+
+#game-board {
+    display: flex;
+    flex-direction: row;
+    /* Horizontal */
+    gap: 10px;
+    margin-bottom: 2rem;
+    padding-bottom: 10px;
+    overflow-x: auto;
+    min-height: 150px;
+    /* Ensure height for columns */
+}
+
+.board-row {
+    display: flex;
+    flex-direction: column;
+    /* Vertical stack for each turn */
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    min-width: 60px;
+}
+
+.turn-number {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 5px;
+    font-size: 0.8rem;
+    color: #7f8c8d;
+}
+
+.guess-slots {
+    display: flex;
+    flex-direction: column;
+    /* Vertical holes in a turn column */
+    gap: 10px;
+}
+
+.hole {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--hole-color);
+    border: 2px solid #2c3e50;
+}
+
+.feedback-slots {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    width: 30px;
+    margin-top: 5px;
+}
+
+.feedback-peg {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #555;
+    /* Empty feedback */
+}
+
+.feedback-peg.black {
+    background-color: #000;
+    border: 1px solid #fff;
+}
+
+.feedback-peg.white {
+    background-color: #fff;
+}
+
+/* Controls */
+.controls {
+    border-top: 2px solid #7f8c8d;
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.color-picker {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 1rem;
+}
+
+.color-option {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: grab;
+    /* Drag cursor */
+    transition: transform 0.1s;
+    border: 2px solid transparent;
+}
+
+.color-option:active {
+    cursor: grabbing;
+}
+
+.color-option:hover {
+    transform: scale(1.1);
+}
+
+.color-option.selected {
+    border-color: #fff;
+    transform: scale(1.1);
+}
+
+.current-guess-row {
+    display: flex;
+    flex-direction: column;
+    /* Match board orientation */
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.guess-hole {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--hole-color);
+    border: 2px dashed #7f8c8d;
+    /* Dashed to indicate drop zone */
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.guess-hole.active {
+    border-color: #fff;
+}
+
+.guess-hole.drag-over {
+    border-color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: scale(1.1);
+}
+
+#submit-guess {
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px 20px;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: bold;
+}
+
+#submit-guess:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#message-area {
+    text-align: center;
+    color: var(--accent-color);
+}
+
+.rules {
+    font-size: 0.8rem;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.rule-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.peg {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.peg.black {
+    background-color: #000;
+    border: 1px solid #555;
+}
+
+.peg.white {
+    background-color: #fff;
+}
+
+#game-board {
+    display: flex;
+    flex-direction: row;
+    /* Horizontal */
+    gap: 10px;
+    margin-bottom: 2rem;
+    padding-bottom: 10px;
+    overflow-x: auto;
+    min-height: 150px;
+    /* Ensure height for columns */
+}
+
+.board-row {
+    display: flex;
+    flex-direction: column;
+    /* Vertical stack for each turn */
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    min-width: 60px;
+}
+
+.turn-number {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 5px;
+    font-size: 0.8rem;
+    color: #7f8c8d;
+}
+
+.guess-slots {
+    display: flex;
+    flex-direction: column;
+    /* Vertical holes in a turn column */
+    gap: 10px;
+}
+
+.hole {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--hole-color);
+    border: 2px solid #2c3e50;
+}
+
+.feedback-slots {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    width: 30px;
+    margin-top: 5px;
+}
+
+.feedback-peg {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #555;
+    /* Empty feedback */
+}
+
+.feedback-peg.black {
+    background-color: #000;
+    border: 1px solid #fff;
+}
+
+.feedback-peg.white {
+    background-color: #fff;
+}
+
+/* Controls */
+.controls {
+    border-top: 2px solid #7f8c8d;
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.color-picker {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 1rem;
+}
+
+.color-option {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: grab;
+    /* Drag cursor */
+    transition: transform 0.1s;
+    border: 2px solid transparent;
+}
+
+.color-option:active {
+    cursor: grabbing;
+}
+
+.color-option:hover {
+    transform: scale(1.1);
+}
+
+.color-option.selected {
+    border-color: #fff;
+    transform: scale(1.1);
+}
+
+.current-guess-row {
+    display: flex;
+    flex-direction: column;
+    /* Match board orientation */
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.guess-hole {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--hole-color);
+    border: 2px dashed #7f8c8d;
+    /* Dashed to indicate drop zone */
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.guess-hole.active {
+    border-color: #fff;
+}
+
+.guess-hole.drag-over {
+    border-color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: scale(1.1);
+}
+
+#submit-guess {
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px 20px;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: bold;
+}
+
+#submit-guess:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#message-area {
+    text-align: center;
+    margin-top: 1rem;
+    font-weight: bold;
+    min-height: 1.5em;
+}
+
+#restart-btn {
+    display: block;
+    margin: 1rem auto;
+    padding: 10px 20px;
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.nav-btn {
+    text-decoration: none;
+    color: #ecf0f1;
+    background-color: #7f8c8d;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+}
+
+.nav-btn:hover {
+    background-color: #95a5a6;
+}

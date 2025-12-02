@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Word - Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo-container">
+            <img src="/assets/Logo.png" alt="Logo" class="logo">
+        </div>
+
+        <div class="card">
+            <h1>Guess the Word</h1>
+
+            <div class="rules-section">
+                <h2>How to Play</h2>
+                <ul class="rules-list">
+                    <li>Guess the secret word based on semantic similarity.</li>
+                    <li><strong>Hot/Cold System:</strong>
+                        <ul class="temperature-scale">
+                            <li class="temp-frozen">Frozen (Far)</li>
+                            <li class="temp-cold">Cold</li>
+                            <li class="temp-cool">Cool</li>
+                            <li class="temp-warm">Warm</li>
+                            <li class="temp-hot">Hot</li>
+                            <li class="temp-burning">Burning</li>
+                            <li class="temp-melting">Melting (Very Close!)</li>
+                        </ul>
+                    </li>
+                    <li>Clues will appear at 1/5th timer intervals.</li>
+                    <li>Guess correctly before the timer runs out to win!</li>
+                </ul>
+            </div>
+
+            <div class="settings-section">
+                <h2>Settings</h2>
+                <div class="setting-group">
+                    <label for="timer">Timer (seconds):</label>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <input type="range" id="timer" min="30" max="300" value="60"
+                            oninput="document.getElementById('timer-val').value = this.value">
+                        <input type="number" id="timer-val" min="30" max="300" value="60"
+                            style="width: 60px; padding: 5px;"
+                            oninput="document.getElementById('timer').value = this.value">
+                    </div>
+                </div>
+
+                <div class="setting-group">
+                    <label for="difficulty">Difficulty:</label>
+                    <select id="difficulty">
+                        <option value="easy">Easy (Common words)</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="hard">Hard</option>
+                        <option value="programming">Programming (Python/Code)</option>
+                        <option value="custom" {% if not custom_available %}disabled{% endif %}>Custom (Create set
+                            first)</option>
+                    </select>
+                    {% if not custom_available %}
+                    <small style="color: #aaa; display: block; margin-top: 5px;">Run <code>create_custom_set.py</code>
+                        to enable Custom mode.</small>
+                    {% endif %}
+                </div>
+            </div>
+
+            <button id="start-btn" class="btn-primary">Start Game</button>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>

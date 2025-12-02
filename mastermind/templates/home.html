@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastermind - Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .home-container {
+            text-align: center;
+            background-color: var(--board-color);
+            padding: 3rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .mode-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 15px 0;
+            font-size: 1.2rem;
+            background-color: var(--hole-color);
+            color: var(--text-color);
+            border: 2px solid #7f8c8d;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .mode-btn:hover {
+            background-color: #7f8c8d;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .multiplayer-setup {
+            display: none;
+            margin-top: 20px;
+            border-top: 1px solid #555;
+            padding-top: 20px;
+        }
+
+        .code-input-area {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .setup-hole {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--hole-color);
+            border: 2px dashed #7f8c8d;
+            cursor: pointer;
+        }
+
+        .start-btn {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        .start-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="home-container">
+        <header>
+            <h1>MASTERMIND</h1>
+            <p>Crack the code!</p>
+        </header>
+
+        <div id="main-menu">
+            <button class="mode-btn" onclick="startGame('computer')">👤 Vs Computer</button>
+            <button class="mode-btn" onclick="showMultiplayerSetup()">👥 Multiplayer (PvP)</button>
+        </div>
+
+        <div id="multiplayer-setup" class="multiplayer-setup">
+            <h3>Set Secret Code</h3>
+            <p>Player 1: Choose 4 colors. <br>Player 2: Look away!</p>
+
+            <div class="color-picker" style="margin-bottom: 20px;">
+                <div class="color-option" data-color="red" style="background-color: #ff4d4d;"></div>
+                <div class="color-option" data-color="blue" style="background-color: #4d4dff;"></div>
+                <div class="color-option" data-color="green" style="background-color: #4dff4d;"></div>
+                <div class="color-option" data-color="yellow" style="background-color: #ffff4d;"></div>
+                <div class="color-option" data-color="orange" style="background-color: #ffad33;"></div>
+                <div class="color-option" data-color="purple" style="background-color: #bf40bf;"></div>
+            </div>
+
+            <div class="code-input-area">
+                <div class="setup-hole empty" data-index="0"></div>
+                <div class="setup-hole empty" data-index="1"></div>
+                <div class="setup-hole empty" data-index="2"></div>
+                <div class="setup-hole empty" data-index="3"></div>
+            </div>
+
+            <button id="start-multi-btn" class="mode-btn start-btn" disabled onclick="startGame('multiplayer')">Start
+                Game</button>
+            <button class="mode-btn" onclick="hideMultiplayerSetup()"
+                style="font-size: 0.9rem; padding: 10px;">Back</button>
+        </div>
+    </div>
+
+    <script>
+        let secretCode = [null, null, null, null];
+        let selectedColor = null;
+
+        function showMultiplayerSetup() {
+            document.getElementById('main-menu').style.display = 'none';
+            document.getElementById('multiplayer-setup').style.display = 'block';
+        }
+
+        function hideMultiplayerSetup() {
+            document.getElementById('main-menu').style.display = 'block';
+            document.getElementById('multiplayer-setup').style.display = 'none';
+            resetSetup();
+        }
+
+        function resetSetup() {
+            secretCode = [null, null, null, null];
+            document.querySelectorAll('.setup-hole').forEach(h => {
+                h.style.backgroundColor = '';
+                h.classList.add('empty');
+            });
+            document.getElementById('start-multi-btn').disabled = true;
+        }
+
+        // Color Selection Logic
+        document.querySelectorAll('.color-option').forEach(opt => {
+            opt.setAttribute('draggable', 'true');
+
+            opt.addEventListener('click', () => {
+                document.querySelectorAll('.color-option').forEach(o => o.classList.remove('selected'));
+                opt.classList.add('selected');
+                selectedColor = opt.dataset.color;
+            });
+
+            opt.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('text/plain', opt.dataset.color);
+                opt.classList.add('dragging');
+            });
+
+            opt.addEventListener('dragend', () => {
+                opt.classList.remove('dragging');
+            });
+        });
+
+        document.querySelectorAll('.setup-hole').forEach((hole, index) => {
+            hole.addEventListener('click', () => {
+                if (selectedColor) {
+                    placeSetupPeg(index, selectedColor);
+                }
+            });
+
+            hole.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                hole.style.transform = 'scale(1.1)';
+            });
+
+            hole.addEventListener('dragleave', () => {
+                hole.style.transform = 'none';
+            });
+
+            hole.addEventListener('drop', (e) => {
+                e.preventDefault();
+                hole.style.transform = 'none';
+                const color = e.dataTransfer.getData('text/plain');
+                if (color) {
+                    placeSetupPeg(index, color);
+                }
+            });
+        });
+
+        function placeSetupPeg(index, color) {
+            secretCode[index] = color;
+            const hole = document.querySelectorAll('.setup-hole')[index];
+            hole.style.backgroundColor = getColorHex(color);
+            hole.classList.remove('empty');
+            checkStartButton();
+        }
+
+        function getColorHex(colorName) {
+            const map = {
+                'red': '#ff4d4d', 'blue': '#4d4dff', 'green': '#4dff4d',
+                'yellow': '#ffff4d', 'orange': '#ffad33', 'purple': '#bf40bf'
+            };
+            return map[colorName];
+        }
+
+        function checkStartButton() {
+            if (secretCode.every(c => c !== null)) {
+                document.getElementById('start-multi-btn').disabled = false;
+            }
+        }
+
+        function startGame(mode) {
+            let body = { mode: mode };
+            if (mode === 'multiplayer') {
+                body.secret_code = secretCode;
+            }
+
+            fetch('/api/start', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            })
+                .then(res => res.json())
+                .then(data => {
+                    window.location.href = '/game';
+                });
+        }
+    </script>
+</body>
+
+</html>
